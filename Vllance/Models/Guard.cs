@@ -30,9 +30,15 @@ public class Guard
     [MaxLength(50)]
     public string Shift { get; set; } = string.Empty;
 
-    // Foreign key: Each Guard belongs to one Zone
     [Required]
-    public int ZoneId { get; set; }
+    public string PasswordHash { get; set; } = string.Empty;
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? LastLoginAt { get; set; }
+
+    // Foreign key: Each Guard belongs to one Zone
+    public int? ZoneId { get; set; }
 
     [ForeignKey(nameof(ZoneId))]
     public Zone? Zone { get; set; }

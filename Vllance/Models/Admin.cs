@@ -25,6 +25,13 @@ public class Admin
     [MaxLength(200)]
     public string Institute { get; set; } = string.Empty;
 
+    [Required]
+    public string PasswordHash { get; set; } = string.Empty;
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? LastLoginAt { get; set; }
+
     // Navigation property: One Admin can handle multiple Zones
     public ICollection<Zone> Zones { get; set; } = new List<Zone>();
 }
