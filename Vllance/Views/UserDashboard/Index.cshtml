@@ -18,7 +18,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo">
-                <span class="logo-icon">??</span>
+                <img src="~/assets/logo.png" alt="Vllance Logo" width="45px" height="45px" />
                 <span class="logo-text">Vllance</span>
             </div>
         </div>
@@ -101,10 +101,10 @@
                 </button>
                 <div class="user-profile">
                     <div class="avatar">
-                        <span>JD</span>
+                        <span>@(ViewBag.UserName?.Substring(0, 2).ToUpper() ?? "US")</span>
                     </div>
                     <div class="user-info">
-                        <span class="user-name">John Doe</span>
+                        <span class="user-name">@(ViewBag.UserName ?? "User")</span>
                         <span class="user-role">User</span>
                     </div>
                 </div>

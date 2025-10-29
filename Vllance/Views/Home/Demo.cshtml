@@ -1,0 +1,948 @@
+@{
+    ViewData["Title"] = "Demo";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Vllance Vehicle Surveillance</title>
+    <link rel="stylesheet" href="~/css/homepage.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #F8FAFC;
+            --accent-color: #5EC2B7;
+            --accent-hover: #4DB5A9;
+            --text-primary: #1e293b;
+            --arctic-glow: #E8F5F4;
+            --arctic-light: #D4EDE9;
+            --shadow-light: rgba(94, 194, 183, 0.25);
+            --success-color: #51cf66;
+            --danger-color: #ff6b6b;
+            --warning-color: #ffd43b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--arctic-glow) 0%, var(--primary-bg) 50%, var(--arctic-light) 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(94, 194, 183, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(125, 211, 192, 0.05) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.6s ease-out;
+        }
+
+        .header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .panel-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            border-radius: 2px;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(94, 194, 183, 0.1);
+        }
+
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--shadow-light);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color), #40c057);
+            color: white;
+            box-shadow: 0 4px 15px rgba(81, 207, 102, 0.3);
+        }
+
+        .btn-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(81, 207, 102, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color), #fa5252);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: #cbd5e1;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            background: #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: crosshair;
+        }
+
+        .video-container.selecting {
+            cursor: crosshair;
+        }
+
+        .video-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-placeholder {
+            color: #94a3b8;
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .video-placeholder svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-badge.idle {
+            background: #e2e8f0;
+            color: #64748b;
+        }
+
+        .status-badge.monitoring {
+            background: rgba(81, 207, 102, 0.15);
+            color: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        .status-badge.movement {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--danger-color);
+            animation: shake 0.5s infinite;
+        }
+
+        .status-badge.selected {
+            background: rgba(94, 194, 183, 0.15);
+            color: var(--accent-color);
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-success {
+            background: rgba(81, 207, 102, 0.15);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .alert-info {
+            background: rgba(94, 194, 183, 0.15);
+            color: var(--accent-color);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .alert-warning {
+            background: rgba(255, 212, 59, 0.15);
+            color: #f59f00;
+            border-left: 4px solid #ffd43b;
+        }
+
+        .detection-info {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .detection-info p {
+            margin: 0.5rem 0;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .detection-info strong {
+            color: var(--text-primary);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            transform: translateX(-3px);
+        }
+
+        .back-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        @@keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        @@keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @@keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @@media (max-width: 1024px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @@media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .panel {
+                padding: 1.5rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="~/assets/logo.png" alt="Vllance Logo" width="45px" height="45px" />
+                <span class="logo-text">Vllance</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="/Account/Login" class="nav-btn login-btn">Login</a>
+                <a href="/Account/Register" class="nav-btn register-btn">Register</a>
+            </div>
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <a href="/" class="back-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Back to Home</span>
+        </a>
+
+        <div class="dashboard">
+            <!-- Left Panel: Video Feed & Controls -->
+            <div class="panel">
+                <h2 class="panel-title">Live Video Feed</h2>
+                
+                <!-- Video Input -->
+                <div class="input-group">
+                    <label for="videoPath">Camera Feed / Video URL</label>
+                    <input 
+                        type="text" 
+                        id="videoPath" 
+                        placeholder="rtsp://camera.ip:554/stream or path/to/video.mp4"
+                        value="">
+                </div>
+
+                <button class="btn btn-primary btn-full" id="loadVideoBtn">
+                    <span id="loadVideoText">Load & Detect Vehicles</span>
+                    <span id="loadVideoSpinner" class="loading-spinner" style="display: none;"></span>
+                </button>
+
+                <!-- Video Display -->
+                <div class="video-container" id="videoContainer">
+                    <div class="video-placeholder" id="videoPlaceholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                        </svg>
+                        <p>Load a video feed to start detection</p>
+                    </div>
+                    <img id="videoFrame" style="display: none;" alt="Video Frame">
+                </div>
+
+                <!-- Detection Info -->
+                <div id="detectionInfo" style="display: none;"></div>
+            </div>
+
+            <!-- Right Panel: Monitoring Controls -->
+            <div class="panel">
+                <h2 class="panel-title">Monitoring Controls</h2>
+
+                <!-- Status Badge -->
+                <div id="statusBadge" class="status-badge idle">
+                    <span>System Idle</span>
+                </div>
+
+                <!-- Alert Messages -->
+                <div id="alertContainer"></div>
+
+                <!-- Vehicle Selection Instructions -->
+                <div class="alert alert-info" id="selectionInstructions" style="display: none;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                    Click on any detected vehicle in the video frame to select it for monitoring
+                </div>
+
+                <!-- Control Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-success" id="startMonitoringBtn" disabled>
+                        Start Monitoring
+                    </button>
+                    <button class="btn btn-danger" id="stopMonitoringBtn" disabled>
+                        Stop Monitoring
+                    </button>
+                </div>
+
+                <button class="btn btn-secondary btn-full" id="currentFrameBtn" disabled style="margin-top: 1rem;">
+                    Get Current Frame
+                </button>
+
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="value" id="detectedCount">0</span>
+                        <span class="label">Vehicles Detected</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="value" id="movementDistance">0.0</span>
+                        <span class="label">Movement (pixels)</span>
+                    </div>
+                </div>
+
+                <!-- Selected Vehicle Info -->
+                <div id="selectedVehicleInfo" style="display: none;" class="detection-info">
+                    <p><strong>Selected Vehicle:</strong></p>
+                    <p id="vehicleLabel">-</p>
+                    <p id="vehicleConfidence">-</p>
+                    <p id="vehicleBbox">-</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        const state = {
+            videoLoaded: false,
+            vehicleSelected: false,
+            monitoring: false,
+            monitoringInterval: null,
+            detections: [],
+            selectedBbox: null,
+            selectedVehicle: null,
+            apiBaseUrl: 'http://localhost:8000' // Update with your FastAPI server URL
+        };
+
+        // DOM Elements
+        const elements = {
+            videoPath: document.getElementById('videoPath'),
+            loadVideoBtn: document.getElementById('loadVideoBtn'),
+            loadVideoText: document.getElementById('loadVideoText'),
+            loadVideoSpinner: document.getElementById('loadVideoSpinner'),
+            videoContainer: document.getElementById('videoContainer'),
+            videoPlaceholder: document.getElementById('videoPlaceholder'),
+            videoFrame: document.getElementById('videoFrame'),
+            statusBadge: document.getElementById('statusBadge'),
+            alertContainer: document.getElementById('alertContainer'),
+            selectionInstructions: document.getElementById('selectionInstructions'),
+            startMonitoringBtn: document.getElementById('startMonitoringBtn'),
+            stopMonitoringBtn: document.getElementById('stopMonitoringBtn'),
+            currentFrameBtn: document.getElementById('currentFrameBtn'),
+            detectionInfo: document.getElementById('detectionInfo'),
+            selectedVehicleInfo: document.getElementById('selectedVehicleInfo'),
+            detectedCount: document.getElementById('detectedCount'),
+            movementDistance: document.getElementById('movementDistance'),
+            vehicleLabel: document.getElementById('vehicleLabel'),
+            vehicleConfidence: document.getElementById('vehicleConfidence'),
+            vehicleBbox: document.getElementById('vehicleBbox')
+        };
+
+        // Utility Functions
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            
+            const icons = {
+                success: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>',
+                danger: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
+                warning: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+                info: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+            };
+            
+            alertDiv.innerHTML = `${icons[type] || icons.info}<span>${message}</span>`;
+            elements.alertContainer.innerHTML = '';
+            elements.alertContainer.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.style.animation = 'fadeInUp 0.3s ease-out reverse';
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 5000);
+        }
+
+        function updateStatus(status, text) {
+            elements.statusBadge.className = `status-badge ${status}`;
+            elements.statusBadge.querySelector('span').textContent = text;
+        }
+
+        function setLoading(isLoading) {
+            elements.loadVideoBtn.disabled = isLoading;
+            elements.loadVideoText.style.display = isLoading ? 'none' : 'inline';
+            elements.loadVideoSpinner.style.display = isLoading ? 'inline-block' : 'none';
+        }
+
+        // API Functions
+        async function loadVideoAndDetect() {
+            const videoPath = elements.videoPath.value.trim();
+            
+            if (!videoPath) {
+                showAlert('Please enter a video path or RTSP URL', 'warning');
+                return;
+            }
+
+            setLoading(true);
+            updateStatus('idle', 'Loading video...');
+
+            try {
+                const response = await fetch(`${state.apiBaseUrl}/api/detect_first_frame`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ video_path: videoPath })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    state.videoLoaded = true;
+                    state.detections = data.detections || [];
+                    
+                    // Display the frame
+                    elements.videoPlaceholder.style.display = 'none';
+                    elements.videoFrame.style.display = 'block';
+                    elements.videoFrame.src = `data:image/jpeg;base64,${data.frame}`;
+                    
+                    // Update UI
+                    elements.detectionInfo.style.display = 'block';
+                    elements.detectionInfo.innerHTML = `
+                        <p><strong>Detection Results:</strong></p>
+                        <p>${state.detections.length} vehicle(s) detected</p>
+                        <p style="font-size: 0.85rem; color: #64748b; margin-top: 0.5rem;">
+                            Click on a vehicle to select it for monitoring
+                        </p>
+                    `;
+                    
+                    elements.detectedCount.textContent = state.detections.length;
+                    elements.selectionInstructions.style.display = 'block';
+                    elements.currentFrameBtn.disabled = false;
+                    
+                    updateStatus('idle', 'Video Loaded - Select Vehicle');
+                    showAlert(`Successfully detected ${state.detections.length} vehicle(s)`, 'success');
+                } else {
+                    showAlert(data.error || 'Failed to load video', 'danger');
+                    updateStatus('idle', 'Error Loading Video');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Connection error. Please ensure the FastAPI server is running.', 'danger');
+                updateStatus('idle', 'Connection Error');
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        async function selectVehicle(x, y) {
+            if (!state.videoLoaded) {
+                showAlert('Please load a video first', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${state.apiBaseUrl}/api/select_vehicle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ x, y })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    state.vehicleSelected = true;
+                    state.selectedBbox = data.selected_bbox;
+                    
+                    // Find the selected vehicle details
+                    state.selectedVehicle = state.detections.find(d => 
+                        JSON.stringify(d.bbox) === JSON.stringify(data.selected_bbox)
+                    );
+
+                    // Update UI
+                    elements.startMonitoringBtn.disabled = false;
+                    elements.selectedVehicleInfo.style.display = 'block';
+                    
+                    if (state.selectedVehicle) {
+                        elements.vehicleLabel.textContent = `Type: ${state.selectedVehicle.label}`;
+                        elements.vehicleConfidence.textContent = `Confidence: ${(state.selectedVehicle.confidence * 100).toFixed(1)}%`;
+                        elements.vehicleBbox.textContent = `Bounding Box: [${data.selected_bbox.join(', ')}]`;
+                    }
+
+                    updateStatus('selected', 'Vehicle Selected');
+                    showAlert(data.message, 'success');
+                } else {
+                    showAlert(data.error || 'Failed to select vehicle', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error selecting vehicle', 'danger');
+            }
+        }
+
+        async function startMonitoring() {
+            if (!state.vehicleSelected) {
+                showAlert('Please select a vehicle first', 'warning');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${state.apiBaseUrl}/api/monitor_control`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'start' })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    state.monitoring = true;
+                    
+                    // Update UI
+                    elements.startMonitoringBtn.disabled = true;
+                    elements.stopMonitoringBtn.disabled = false;
+                    updateStatus('monitoring', 'Monitoring Active');
+                    showAlert(data.message, 'success');
+
+                    // Start periodic monitoring checks (every 500ms)
+                    state.monitoringInterval = setInterval(checkVehicleMovement, 500);
+                } else {
+                    showAlert(data.error || 'Failed to start monitoring', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error starting monitoring', 'danger');
+            }
+        }
+
+        async function stopMonitoring() {
+            try {
+                const response = await fetch(`${state.apiBaseUrl}/api/monitor_control`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action: 'stop' })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    state.monitoring = false;
+                    
+                    // Clear interval
+                    if (state.monitoringInterval) {
+                        clearInterval(state.monitoringInterval);
+                        state.monitoringInterval = null;
+                    }
+
+                    // Update UI
+                    elements.startMonitoringBtn.disabled = false;
+                    elements.stopMonitoringBtn.disabled = true;
+                    updateStatus('selected', 'Monitoring Stopped');
+                    elements.movementDistance.textContent = '0.0';
+                    showAlert(data.message, 'info');
+                } else {
+                    showAlert(data.error || 'Failed to stop monitoring', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error stopping monitoring', 'danger');
+            }
+        }
+
+        async function checkVehicleMovement() {
+            if (!state.monitoring || !state.selectedBbox) return;
+
+            try {
+                const response = await fetch(`${state.apiBaseUrl}/api/monitor_vehicle`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ selected_bbox: state.selectedBbox })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.movement_detected) {
+                        updateStatus('movement', '?? Movement Detected!');
+                        elements.movementDistance.textContent = data.distance_moved.toFixed(1);
+                        
+                        // Show alert only once when movement is first detected
+                        if (!state.movementAlertShown) {
+                            showAlert(`Unauthorized movement detected! Distance: ${data.distance_moved.toFixed(1)}px (Threshold: ${data.threshold}px)`, 'danger');
+                            state.movementAlertShown = true;
+                        }
+                    } else {
+                        updateStatus('monitoring', 'Monitoring Active - No Movement');
+                        elements.movementDistance.textContent = (data.distance_moved || 0).toFixed(1);
+                        state.movementAlertShown = false;
+                    }
+                } else {
+                    console.error('Monitoring error:', data.error);
+                }
+            } catch (error) {
+                console.error('Error checking movement:', error);
+            }
+        }
+
+        async function getCurrentFrame() {
+            try {
+                const response = await fetch(`${state.apiBaseUrl}/api/current_frame`, {
+                    method: 'GET'
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    elements.videoFrame.src = `data:image/jpeg;base64,${data.frame}`;
+                    showAlert('Current frame updated', 'success');
+                } else {
+                    showAlert(data.error || 'Failed to get current frame', 'danger');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showAlert('Error getting current frame', 'danger');
+            }
+        }
+
+        // Event Listeners
+        elements.loadVideoBtn.addEventListener('click', loadVideoAndDetect);
+
+        elements.videoFrame.addEventListener('click', (event) => {
+            if (!state.videoLoaded || state.monitoring) return;
+
+            const rect = elements.videoFrame.getBoundingClientRect();
+            const scaleX = elements.videoFrame.naturalWidth / rect.width;
+            const scaleY = elements.videoFrame.naturalHeight / rect.height;
+            
+            const x = Math.round((event.clientX - rect.left) * scaleX);
+            const y = Math.round((event.clientY - rect.top) * scaleY);
+
+            selectVehicle(x, y);
+        });
+
+        elements.startMonitoringBtn.addEventListener('click', startMonitoring);
+        elements.stopMonitoringBtn.addEventListener('click', stopMonitoring);
+        elements.currentFrameBtn.addEventListener('click', getCurrentFrame);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' && !elements.loadVideoBtn.disabled) {
+                loadVideoAndDetect();
+            }
+        });
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (state.monitoring) {
+                stopMonitoring();
+            }
+        });
+
+        // Initial status
+        console.log('Vehicle Surveillance Dashboard Initialized');
+        console.log('API Base URL:', state.apiBaseUrl);
+    </script>
+</body>
+</html>
