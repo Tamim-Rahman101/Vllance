@@ -1,120 +1,134 @@
 # Vllance - Web-Based Vehicle Surveillance System
 
-## ?? Running the Project
+![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet)
+![C#](https://img.shields.io/badge/C%23-13.0-239120?logo=csharp)
+![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?logo=microsoft-sql-server)
+![ASP.NET](https://img.shields.io/badge/ASP.NET-Core%209.0-512BD4?logo=asp.net)
+![Entity Framework](https://img.shields.io/badge/Entity%20Framework-Core%209.0-512BD4?logo=entity-framework)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.95.2-009688?logo=fastapi)
 
-### Prerequisites
-- .NET 9 SDK installed
-- Visual Studio 2022 or VS Code
 
-### Run the Application
 
-1. **Using Visual Studio:**
-   - Open the solution in Visual Studio
-   - Press `F5` or click the "Run" button
-   - The application will open in your default browser
+**Vllance** is an intelligent web-based vehicle surveillance and security system that enables users to monitor, lock, and protect their vehicles remotely from anywhere, at any time.
 
-2. **Using Command Line:**
-   ```bash
-   cd Vllance
-   dotnet run
-   ```
-   - Open your browser and navigate to `https://localhost:5001` or `http://localhost:5000`
+## Features
 
-3. **Using VS Code:**
-   - Open the integrated terminal
-   - Run `dotnet watch run` for hot reload
-   - Navigate to the URL shown in the terminal
+### Core Functionality
+- **Real-Time Vehicle Detection** - Advanced AI-powered monitoring with instant vehicle detection capabilities
+- **Remote Lock/Unlock** - Control your vehicle's security from anywhere with one-tap access
+- **Movement Detection** - Real-time alerts for unauthorized vehicle movement
+- **Live Video Feed** - Stream and monitor camera feeds via RTSP or video files
+- **Interactive Vehicle Selection** - Click-to-select vehicles from video frames for targeted monitoring
 
-## ?? Project Structure (MVC Pattern)
+### Security & Management
+- **Movement Threshold Monitoring** - Configurable pixel-based movement detection
+- **Instant Alerts** - Get notified immediately when suspicious activity is detected
+- **User Authentication** - Secure login and registration system
+- **Admin Dashboard** - Comprehensive zone and user management
 
+### Monitoring Dashboard
+- **Video Display Panel** - Real-time video feed with detection overlays
+- **Control Panel** - Start/stop monitoring with live statistics
+- **Detection Stats** - Track detected vehicles and movement distance
+
+## Tech Stack
+
+### Backend
+- **Framework**: ASP.NET Core 9.0 (MVC)
+- **Language**: C# 13.0
+- **Database**: SQL Server with Entity Framework Core 9.0
+- **ORM**: Entity Framework Core
+
+### Frontend
+- **UI**: Razor Pages with custom CSS
+- **Fonts**: Google Fonts (Inter, Poppins)
+- **Icons**: Custom SVG illustrations
+- **Animations**: CSS transitions and keyframes
+
+### AI & Detection
+- **Integration**: FastAPI backend (Python)
+- **Detection**: YOLO-based vehicle detection
+- **Video Processing**: Support RTSP stream and prerecorded video file
+
+## 📋 Prerequisites
+
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [SQL Server](https://www.microsoft.com/sql-server)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/)
+- FastAPI Backend Server (for vehicle detection features)
+
+## 🚀 Getting Started
+
+### Installation
+
+1. **Clone the repository**
+```bash
+git clone https://github.com/Tamim-Rahman101/Vllance.git
 ```
-Vllance/
-??? Controllers/          # MVC Controllers
-?   ??? HomeController.cs # Handles home page requests
-??? Models/              # Data models
-?   ??? Admin.cs         # Admin user model
-?   ??? User.cs          # User model with vehicles
-?   ??? Guard.cs         # Security guard model
-?   ??? Vehicle.cs       # Vehicle model
-?   ??? ErrorViewModel.cs # Error page model
-??? Views/               # Razor views
-?   ??? Home/
-?   ?   ??? Index.cshtml # Homepage view
-?   ??? Shared/
-?   ?   ??? _Layout.cshtml     # Shared layout
-?   ?   ??? Error.cshtml       # Error page
-?   ??? _ViewImports.cshtml    # View imports
-?   ??? _ViewStart.cshtml      # View start
-??? wwwroot/             # Static files
-?   ??? css/
-?   ?   ??? homepage.css # Homepage styles
-?   ??? js/
-?       ??? homepage.js  # Homepage interactions
-??? Program.cs           # Application entry point (MVC configuration)
+
+2. **Restore dependencies**
+```bash
+cd Vllance
+dotnet restore
 ```
 
-## ?? MVC Architecture
 
-This project follows the **Model-View-Controller (MVC)** pattern:
-
-- **Models** - Data structures and business logic
-- **Views** - User interface (Razor files in Views folder)
-- **Controllers** - Handle HTTP requests and coordinate between Models and Views
-
-### Routing
-The default route is configured as:
-```
-{controller=Home}/{action=Index}/{id?}
+3. **Update database connection string** - Edit `appsettings.json` with your SQL Server connection details
+```bash
+"ConnectionStrings": {
+    "DefaultConnection": "Server=YOUR_SERVER;Database=VllanceDB;TrustServerCertificate=true"
+}
 ```
 
-This means:
-- `/` ? HomeController.Index()
-- `/Home/Index` ? HomeController.Index()
-- `/Home/Privacy` ? HomeController.Privacy()
+4. **Apply database migrations**
+```bash
+dotnet ef database update
+```
 
-## ?? Homepage Features
 
-- **Modern, Minimalistic Design** - Clean UI with dark navy theme
-- **Responsive Layout** - Works on desktop, tablet, and mobile
-- **Smooth Animations** - Fade-in effects and scroll animations
-- **Interactive Elements** - Hover effects on cards and buttons
-- **Sticky Navigation** - Fixed navbar with scroll effects
-- **Feature Showcase** - 4 key features displayed in cards
-- **How It Works** - 3-step process visualization
-- **Professional Footer** - Links and copyright information
+5. **Configure FastAPI backend**
+- Update the `apiBaseUrl` in Demo.cshtml (default: `http://localhost:8000`)
+- Ensure your FastAPI server is running with the following endpoints:
+  - `/api/detect_first_frame`
+  - `/api/select_vehicle`
+  - `/api/monitor_control`
+  - `/api/monitor_vehicle`
+  - `/api/current_frame`
 
-## ?? Next Steps
 
-You can now:
-1. Create additional controllers (e.g., `AccountController` for login/register)
-2. Add more views in the `Views` folder
-3. Build the dashboard
-4. Implement authentication
-5. Add database context for the models
+6. **Run the application**
 
-## ?? Current Navigation Links
+```bash
+dotnet run
+```
+7. **Access the application**
+```bash
+http://localhost:5000
+```
 
-The homepage has navigation links ready for:
-- `/Login` - Login page (to be created)
-- `/Register` - Registration page (to be created)
-- `/Privacy` - Privacy policy (to be created)
-- `/Terms` - Terms of service (to be created)
 
-## ?? Design Features
 
-- **Colors:**
-  - Primary: Dark Navy (#0f172a)
-  - Secondary: Slate (#1e293b)
-  - Accent: Cyan/Teal (#06b6d4)
-  
-- **Typography:**
-  - Headings: Poppins (Google Fonts)
-  - Body: Inter (Google Fonts)
+## Usage
 
-- **Animations:**
-  - Scroll reveal on feature cards
-  - Pulse effect on security cameras
-  - Smooth transitions on hover
-  - Parallax effect on hero illustration
+### User Flow
+1. **Register/Login** - Register an account or log in
+2. **Access Demo** - Try the vehicle detection demo from the homepage
+3. **Load Video Feed** - Enter RTSP URL or video file path
+4. **Detect Vehicles** - System automatically detects vehicles in the frame
+5. **Select Vehicle** - Click on a detected vehicle to monitor it
+6. **Start Monitoring** - Begin real-time movement tracking
+7. **Receive Alerts** - Get notified of any unauthorized movement
 
-Enjoy building your Vehicle Surveillance System! ????
+
+
+## Author
+
+**Tamim Rahman**
+- GitHub: [@Tamim-Rahman101](https://github.com/Tamim-Rahman101)
+
+## Acknowledgments
+
+- YOLO for vehicle detection capabilities
+- Entity Framework Core team
+- ASP.NET Core community
+- Github copilot for AI assistance
